@@ -23,9 +23,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddApplicationServices();
 
+builder.Services.AddCors(builder =>
+{
+    builder.AddDefaultPolicy(options =>
+    {
+        options.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowCredentials();
+    });
+});
+
 try
 {
     var app = builder.Build();
+    app.UseCors();
 
     app.UseSerilogRequestLogging(); // Add Serilog request logging
 
