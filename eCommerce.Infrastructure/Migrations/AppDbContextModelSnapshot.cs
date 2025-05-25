@@ -51,13 +51,13 @@ namespace eCommerce.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6007c13f-7341-4e1e-b2c6-58dc18df8b41",
+                            Id = "e8f7be04-f34f-473e-8a05-ed4c75d6a071",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c348f460-0545-467e-8c2d-900535533833",
+                            Id = "7dbce538-1e03-4347-ad68-bf8d308c1947",
                             Name = "User",
                             NormalizedName = "USER"
                         });
