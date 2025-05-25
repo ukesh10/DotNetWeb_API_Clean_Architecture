@@ -1,6 +1,12 @@
 ﻿using eCommerce.Application.Mapping;
 using eCommerce.Application.Services.Implementation;
+using eCommerce.Application.Services.Implementation.Authentication;
 using eCommerce.Application.Services.Interfaces;
+using eCommerce.Application.Services.Interfaces.Authentication;
+using eCommerce.Application.Validations;
+using eCommerce.Application.Validations.Authentication;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eCommerce.Application.DependencyInjection
@@ -16,6 +22,11 @@ namespace eCommerce.Application.DependencyInjection
             //services.AddScoped<IUserService, UserService>();
             //services.AddScoped<IRoleService, RoleService>();
             //services.AddScoped<IAuthService, AuthService>();
+
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+            services.AddScoped<IValidationService, ValidationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             return services;
         }
     }

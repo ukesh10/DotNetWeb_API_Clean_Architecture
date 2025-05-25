@@ -29,7 +29,7 @@ builder.Services.AddCors(builder =>
     {
         options.AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowAnyOrigin()
+                .WithOrigins("https://localhost:7025")
                 .AllowCredentials();
     });
 });
