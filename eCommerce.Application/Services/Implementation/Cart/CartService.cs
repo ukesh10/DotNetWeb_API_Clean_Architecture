@@ -9,11 +9,18 @@ using eCommerce.Domain.Interfaces.Cart;
 
 namespace eCommerce.Application.Services.Implementation.Cart
 {
-    public class CartService(ICart cartInterface, IMapper mapper, IGeneric<Product> productInterface) : ICartService
+    public class CartService(ICart cartInterface, IMapper mapper, IGeneric<Product> productInterface,
+        IPaymentMethodService paymentMethodService, IPaymentService paymentService) : ICartService
     {
-        public Task<ServiceResponse> Checkout(Checkout checkout, string userId)
+        public async Task<ServiceResponse> Checkout(Checkout checkout)
         {
-             
+            var (products, totalAmount) = await GetCartTotalAmount(checkout.Carts);
+            var paymentMethods = await paymentMethodService.GetpaymentMethods();
+
+            if(checkout.PaymentMethodId == paymentMethods.FirstOrDefault().Id)
+                return await paymentService.Pay(totalAmount, products, checkout.Carts);
+            else
+                return new ServiceResponse(false, "Invalid payment method");
         }
 
         public async Task<ServiceResponse> SaveCheckoutHistory(IEnumerable<CreateAchieve> achieves)
@@ -24,7 +31,7 @@ namespace eCommerce.Application.Services.Implementation.Cart
                               : new ServiceResponse(false, "Error occurred in saving");
         }
 
-        private async Task<(IEnumerable<Product>,decimal)> GetTotalAmount(IEnumerable<ProcessCart> carts)
+        private async Task<(IEnumerable<Product>,decimal)> GetCartTotalAmount(IEnumerable<ProcessCart> carts)
         {
             if(!carts.Any()) return ([], 0);
 

@@ -12,8 +12,8 @@ using eCommerce.Infrastructure.Data;
 namespace eCommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250525132810_Initial")]
-    partial class Initial
+    [Migration("20250601080637_CartTable")]
+    partial class CartTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace eCommerce.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e8f7be04-f34f-473e-8a05-ed4c75d6a071",
+                            Id = "11374505-4780-478f-8993-5b5a98962df7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7dbce538-1e03-4347-ad68-bf8d308c1947",
+                            Id = "39fc08a6-4ca9-4d0b-904a-9de445559925",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -174,6 +174,51 @@ namespace eCommerce.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("eCommerce.Domain.Entities.Cart.Achieve", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedData")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CheckoutAchieves");
+                });
+
+            modelBuilder.Entity("eCommerce.Domain.Entities.Cart.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9fc3bb23-3f01-4366-95d8-4b4144e03919"),
+                            Name = "Credit Card"
+                        });
                 });
 
             modelBuilder.Entity("eCommerce.Domain.Entities.Category", b =>
